@@ -1,3 +1,7 @@
+package com.cafepos.payment;
+
+import com.cafepos.domain.Order;
+
 public final class WalletPayment implements PaymentStrategy {
     private final String walletId;
 

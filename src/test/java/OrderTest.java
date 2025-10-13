@@ -1,3 +1,12 @@
+import com.cafepos.catalog.SimpleProduct;
+import com.cafepos.domain.LineItem;
+import com.cafepos.domain.Order;
+import com.cafepos.payment.CardPayment;
+import com.cafepos.payment.CashPayment;
+import com.cafepos.payment.PaymentStrategy;
+import com.cafepos.payment.WalletPayment;
+
+import com.cafepos.common.Money;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

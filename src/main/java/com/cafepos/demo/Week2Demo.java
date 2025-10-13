@@ -1,3 +1,13 @@
+package com.cafepos.demo;
+
+import com.cafepos.catalog.Catalog;
+import com.cafepos.catalog.InMemoryCatalog;
+import com.cafepos.catalog.SimpleProduct;
+
+import com.cafepos.common.Money;
+import com.cafepos.domain.LineItem;
+import com.cafepos.domain.Order;
+
 public final class Week2Demo {
     public static void main(String[] args) {
         Catalog catalog = new InMemoryCatalog();

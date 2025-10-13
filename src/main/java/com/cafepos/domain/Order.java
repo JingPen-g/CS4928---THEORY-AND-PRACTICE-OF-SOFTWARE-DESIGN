@@ -1,3 +1,8 @@
+package com.cafepos.domain;
+
+import com.cafepos.payment.PaymentStrategy;
+import com.cafepos.common.Money;
+import com.cafepos.observer.OrderObserver;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;

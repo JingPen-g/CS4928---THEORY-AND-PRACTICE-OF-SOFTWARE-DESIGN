@@ -1,4 +1,7 @@
-public class FakeOrderObserver implements OrderObserver{
+import com.cafepos.domain.Order;
+import com.cafepos.observer.OrderObserver;
+
+public class FakeOrderObserver implements OrderObserver {
 
     boolean called = false;
     String eventType;
@@ -8,4 +11,5 @@ public class FakeOrderObserver implements OrderObserver{
         called = true;
         this.eventType = eventType;
     }
+
 }

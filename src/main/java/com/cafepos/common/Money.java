@@ -1,3 +1,5 @@
+package com.cafepos.common;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
