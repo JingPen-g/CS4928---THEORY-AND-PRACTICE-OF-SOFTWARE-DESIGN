@@ -7,11 +7,11 @@ public final class Order {
     private final long id;
     private final List<LineItem> items = new ArrayList<>();
     public Order(long id) { this.id = id; }
-    public void addItem(LineItem li) {
-        if (li.quantity() > 0) {
-            items.add(li);
-        }
-    }
+//    public void addItem(LineItem li) {
+//        if (li.quantity() > 0) {
+//            items.add(li);
+//        }
+//    }
     public Money subtotal() {
         return
                 items.stream().map(LineItem::lineTotal).reduce(Money.zero()
@@ -38,10 +38,59 @@ public final class Order {
         return items;
     }
 
+//    public void pay(PaymentStrategy strategy) {
+//        if (strategy == null) {
+//            throw new IllegalArgumentException("strategy required");
+//        }
+//        strategy.pay(this);
+//    }
+
+    // Order.java (extension) -- You must complete missing parts using following instructions
+    // 1) Maintain subscriptions
+    private final List<OrderObserver> observers = new ArrayList<>();
+    public void register(OrderObserver o) {
+// TODO: add null check and add the observer
+        if (o == null) {
+            throw new IllegalArgumentException("observer is required");
+        }
+        if (observers.contains(o)) {
+            throw new IllegalArgumentException("observer already added");
+        }
+        observers.add(o);
+    }
+    public void unregister(OrderObserver o) {
+// TODO: remove the observer if present
+        if (o != null) {
+            observers.remove(o);
+        }
+    }
+    // 2) Publish events
+    private void notifyObservers(String eventType) {
+// TODO: iterate observers and call updated(this, eventType)
+        for (OrderObserver observer : observers) {
+            observer.updated(this, eventType);
+        }
+    }
+    // 3) Hook notifications into existing behaviors
+    //@Override
+    public void addItem(LineItem li) {
+// TODO: call super/add to items and then notifyObservers("itemAdded")
+        if (li.quantity() > 0) {
+            items.add(li);
+        }
+        notifyObservers("itemAdded");
+    }
+    //@Override
     public void pay(PaymentStrategy strategy) {
+// TODO: delegate to strategy as before, then notifyObservers("paid")
         if (strategy == null) {
             throw new IllegalArgumentException("strategy required");
         }
         strategy.pay(this);
+        notifyObservers("paid");
+    }
+    public void markReady() {
+// TODO: just publish notifyObservers("ready")
+        notifyObservers("ready");
     }
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="4">
+  <component name="AdditionalModuleElements">
+    <content url="file://$MODULE_DIR$" dumb="true">
+      <sourceFolder url="file://$MODULE_DIR$/src/main" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java/com" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java/com/cafepos" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java/com/cafepos/catalog" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java/com/cafepos/common" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java/com/cafepos/demo" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java/com/cafepos/domain" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java/com/cafepos/payment" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test" isTestSource="true" />
+    </content>
+  </component>
+</module>
