@@ -3,10 +3,7 @@ package com.cafepos.smells;
 import com.cafepos.common.Money;
 import com.cafepos.factory.ProductFactory;
 import com.cafepos.catalog.Product;
-import com.cafepos.pricing.DiscountPolicy;
-import com.cafepos.pricing.FixedCouponDiscount;
-import com.cafepos.pricing.LoyaltyPercentDiscount;
-import com.cafepos.pricing.NoDiscount;
+import com.cafepos.pricing.*;
 
 public class OrderManagerGod { // God Class
     public static int TAX_PERCENT = 10; // Global/Static State: risky and hard to test. Primitive Obsession: `TAX_PERCENT` as primitive; magic numbers for rates. Shotgun Surgery: Tax rules embedded inline; any change requires editing this method.
@@ -31,10 +28,9 @@ public class OrderManagerGod { // God Class
         LAST_DISCOUNT_CODE = discountCode;
         Money discounted = Money.of(subtotal.asBigDecimal().subtract(discount.asBigDecimal())); // Duplicated Logic: Money and BigDecimal manipulations scattered inline.
         if (discounted.asBigDecimal().signum() < 0) discounted = Money.zero();
-        var tax = Money.of(discounted.asBigDecimal() // Duplicated Logic: Money and BigDecimal manipulations scattered inline.
-                .multiply(java.math.BigDecimal.valueOf(TAX_PERCENT))
-                .divide(java.math.BigDecimal.valueOf(100)));
-        var total = discounted.add(tax);
+        TaxPolicy taxPolicy = new FixedRateTaxPolicy(TAX_PERCENT);
+        Money tax = taxPolicy.taxOn(discounted);
+        Money total = discounted.add(tax);
         if (paymentType != null) { // Shotgun Surgery: discount rules embedded inline; any change requires editing this method.
             if (paymentType.equalsIgnoreCase("CASH")) { // Primitive Obsession: `paymentType` Strings
                 System.out.println("[Cash] Customer paid " + total + " EUR");
