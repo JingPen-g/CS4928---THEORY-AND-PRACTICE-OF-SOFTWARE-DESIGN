@@ -1,8 +1,13 @@
 package com.cafepos.smells;
 
 import com.cafepos.common.Money;
+import com.cafepos.domain.Order;
 import com.cafepos.factory.ProductFactory;
 import com.cafepos.catalog.Product;
+import com.cafepos.payment.CardPayment;
+import com.cafepos.payment.CashPayment;
+import com.cafepos.payment.PaymentStrategy;
+import com.cafepos.payment.WalletPayment;
 import com.cafepos.pricing.*;
 
 public class OrderManagerGod { // God Class
@@ -31,17 +36,14 @@ public class OrderManagerGod { // God Class
         TaxPolicy taxPolicy = new FixedRateTaxPolicy(TAX_PERCENT);
         Money tax = taxPolicy.taxOn(discounted);
         Money total = discounted.add(tax);
-        if (paymentType != null) { // Shotgun Surgery: discount rules embedded inline; any change requires editing this method.
-            if (paymentType.equalsIgnoreCase("CASH")) { // Primitive Obsession: `paymentType` Strings
-                System.out.println("[Cash] Customer paid " + total + " EUR");
-            } else if (paymentType.equalsIgnoreCase("CARD")) { // Primitive Obsession: `paymentType` Strings
-                System.out.println("[Card] Customer paid " + total + " EUR with card ****1234");
-            } else if (paymentType.equalsIgnoreCase("WALLET")) { // Primitive Obsession: `paymentType` Strings
-                System.out.println("[Wallet] Customer paid " + total + " EUR via wallet user-wallet-789");
-            } else {
-                System.out.println("[UnknownPayment] " + total);
-            }
-        }
+        PaymentStrategy paymentStrategy = switch (paymentType == null ? "UNKNOWN" : paymentType.toUpperCase()) {
+            case "CASH" -> new CashPayment();
+            case "CARD" -> new CardPayment("1234567887654321");
+            case "WALLET" -> new WalletPayment("wallet user-wallet-789");
+            default -> new CashPayment();
+        };
+        Order order = new Order(1L);
+        order.pay(paymentStrategy);
         PricingService pricingService = new PricingService(discountPolicy, new FixedRateTaxPolicy(TAX_PERCENT));
         PricingService.PricingResult pr = pricingService.price(subtotal);
 
