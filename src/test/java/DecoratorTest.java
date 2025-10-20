@@ -1,7 +1,7 @@
 import com.cafepos.catalog.Product;
 import com.cafepos.catalog.SimpleProduct;
 import com.cafepos.common.Money;
-import com.cafepos.common.Priced;
+import com.cafepos.decorator.Priced;
 import com.cafepos.decorator.ExtraShot;
 import com.cafepos.decorator.OatMilk;
 import com.cafepos.decorator.SizeLarge;
