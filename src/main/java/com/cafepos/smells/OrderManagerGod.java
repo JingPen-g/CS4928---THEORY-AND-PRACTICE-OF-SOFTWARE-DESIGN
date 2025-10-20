@@ -3,6 +3,11 @@ package com.cafepos.smells;
 import com.cafepos.common.Money;
 import com.cafepos.factory.ProductFactory;
 import com.cafepos.catalog.Product;
+import com.cafepos.pricing.DiscountPolicy;
+import com.cafepos.pricing.FixedCouponDiscount;
+import com.cafepos.pricing.LoyaltyPercentDiscount;
+import com.cafepos.pricing.NoDiscount;
+
 public class OrderManagerGod { // God Class
     public static int TAX_PERCENT = 10; // Global/Static State: risky and hard to test. Primitive Obsession: `TAX_PERCENT` as primitive; magic numbers for rates. Shotgun Surgery: Tax rules embedded inline; any change requires editing this method.
     public static String LAST_DISCOUNT_CODE = null; // Global/Static State: risky and hard to test.
@@ -18,21 +23,12 @@ public class OrderManagerGod { // God Class
         }
         if (qty <= 0) qty = 1;
         Money subtotal = unitPrice.multiply(qty);
-        Money discount = Money.zero();
-        if (discountCode != null) {
-            if (discountCode.equalsIgnoreCase("LOYAL5")) { // Primitive Obsession: `discountCode` strings. Shotgun Surgery: discount rules embedded inline; any change requires editing this method.
-                discount = Money.of(subtotal.asBigDecimal() // Duplicated Logic: Money and BigDecimal manipulations scattered inline.
-                        .multiply(java.math.BigDecimal.valueOf(5))
-                        .divide(java.math.BigDecimal.valueOf(100)));
-            } else if (discountCode.equalsIgnoreCase("COUPON1")) { // Primitive Obsession: `discountCode` strings. Shotgun Surgery: discount rules embedded inline; any change requires editing this method.
-                discount = Money.of(1.00);
-            } else if (discountCode.equalsIgnoreCase("NONE")) { // Primitive Obsession: `discountCode` strings. Shotgun Surgery: discount rules embedded inline; any change requires editing this method.
-                discount = Money.zero();
-            } else {
-                discount = Money.zero();
-            }
-            LAST_DISCOUNT_CODE = discountCode;
-        }
+        DiscountPolicy discountPolicy = switch (discountCode == null ? "NONE" : discountCode.toUpperCase()) {
+            case "LOYAL5" -> new LoyaltyPercentDiscount(5);
+            case "COUPON1" -> new FixedCouponDiscount(Money.of(1.00));
+            default -> new NoDiscount(); };
+        Money discount = discountPolicy.discountOf(subtotal);
+        LAST_DISCOUNT_CODE = discountCode;
         Money discounted = Money.of(subtotal.asBigDecimal().subtract(discount.asBigDecimal())); // Duplicated Logic: Money and BigDecimal manipulations scattered inline.
         if (discounted.asBigDecimal().signum() < 0) discounted = Money.zero();
         var tax = Money.of(discounted.asBigDecimal() // Duplicated Logic: Money and BigDecimal manipulations scattered inline.
