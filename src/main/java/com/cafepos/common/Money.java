@@ -9,6 +9,9 @@ public final class Money implements Comparable<Money> {
     public static Money of(double value) {
         return new Money(BigDecimal.valueOf(value));
     }
+    public static Money of(BigDecimal value) {
+        return new Money(value);
+    }
     public static Money zero() {
         return new Money(BigDecimal.ZERO);
     }
@@ -29,7 +32,7 @@ public final class Money implements Comparable<Money> {
         return this.amount.compareTo(money.amount);
     }
     
-    public BigDecimal getMoney() {
+    public BigDecimal asBigDecimal() {
         return this.amount;
     }
 // equals, hashCode, toString, etc.

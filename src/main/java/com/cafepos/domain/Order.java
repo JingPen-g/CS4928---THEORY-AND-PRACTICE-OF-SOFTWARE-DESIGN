@@ -25,7 +25,7 @@ public final class Order {
     public Money taxAtPercent(int percent) {
         Money base = subtotal();
         BigDecimal rate = BigDecimal.valueOf(percent).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
-        BigDecimal taxPay = base.getMoney().multiply(rate);
+        BigDecimal taxPay = base.asBigDecimal().multiply(rate);
         double tax = taxPay.doubleValue();
         return Money.of(tax);
     }
