@@ -42,15 +42,12 @@ public class OrderManagerGod { // God Class
                 System.out.println("[UnknownPayment] " + total);
             }
         }
-        StringBuilder receipt = new StringBuilder();
-        receipt.append("Order (").append(recipe).append(") x").append(qty).append("\n");
-                receipt.append("Subtotal: ").append(subtotal).append("\n");
-        if (discount.asBigDecimal().signum() > 0) {
-            receipt.append("Discount: -").append(discount).append("\n");
-        }
-        receipt.append("Tax (").append(TAX_PERCENT).append("%): ").append(tax).append("\n");
-        receipt.append("Total: ").append(total);
-        String out = receipt.toString();
+        PricingService pricingService = new PricingService(discountPolicy, new FixedRateTaxPolicy(TAX_PERCENT));
+        PricingService.PricingResult pr = pricingService.price(subtotal);
+
+        ReceiptPrinter printer = new ReceiptPrinter();
+        String out = printer.format(recipe, qty, pr, TAX_PERCENT);
+
         if (printReceipt) {
             System.out.println(out);
         }
