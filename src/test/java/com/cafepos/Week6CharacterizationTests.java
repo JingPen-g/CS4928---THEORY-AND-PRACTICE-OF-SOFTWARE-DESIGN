@@ -1,10 +1,22 @@
 package com.cafepos;
+import com.cafepos.common.Money;
+import com.cafepos.factory.ProductFactory;
+import com.cafepos.payment.CardPayment;
+import com.cafepos.payment.CashPayment;
+import com.cafepos.pricing.*;
 import com.cafepos.smells.OrderManagerGod;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 public class Week6CharacterizationTests {
     @Test void no_discount_cash_payment() {
-        String receipt = OrderManagerGod.process("ESP+SHOT+OAT", 1,
+        OrderManagerGod orderManagerGod = new OrderManagerGod(
+                new ProductFactory(),
+                new NoDiscount(),
+                new FixedRateTaxPolicy(10),
+                new ReceiptPrinter(),
+                new CashPayment()
+        );
+        String receipt = orderManagerGod.process("ESP+SHOT+OAT", 1,
                 "CASH", "NONE", false);
         assertTrue(receipt.startsWith("Order (ESP+SHOT+OAT) x1"));
         assertTrue(receipt.contains("Subtotal: 3.80"));
@@ -12,7 +24,14 @@ public class Week6CharacterizationTests {
         assertTrue(receipt.contains("Total: 4.18"));
     }
     @Test void loyalty_discount_card_payment() {
-        String receipt = OrderManagerGod.process("LAT+L", 2, "CARD",
+        OrderManagerGod orderManagerGod = new OrderManagerGod(
+                new ProductFactory(),
+                new LoyaltyPercentDiscount(5),
+                new FixedRateTaxPolicy(10),
+                new ReceiptPrinter(),
+                new CardPayment("1234567887654321")
+        );
+        String receipt = orderManagerGod.process("LAT+L", 2, "CARD",
                 "LOYAL5", false);
 // Latte (Large) base = 3.20 + 0.70 = 3.90, qty 2 => 7.80
 // 5% discount => 0.39, discounted=7.41; tax 10% => 0.74; total=8.15
@@ -22,7 +41,14 @@ public class Week6CharacterizationTests {
         assertTrue(receipt.contains("Total: 8.15"));
     }
     @Test void coupon_fixed_amount_and_qty_clamp() {
-        String receipt = OrderManagerGod.process("ESP+SHOT", 0, "WALLET",
+        OrderManagerGod orderManagerGod = new OrderManagerGod(
+                new ProductFactory(),
+                new FixedCouponDiscount(Money.of(1.00)),
+                new FixedRateTaxPolicy(10),
+                new ReceiptPrinter(),
+                new CashPayment()
+        );
+        String receipt = orderManagerGod.process("ESP+SHOT", 0, "WALLET",
                 "COUPON1", false);
 // qty=0 clamped to 1; Espresso+SHOT = 2.50 + 0.80 = 3.30; coupon1 => -1 => 2.30; tax=0.23; total=2.53
         assertTrue(receipt.contains("Order (ESP+SHOT) x1"));
