@@ -15,7 +15,7 @@ public class TotalPaymentAdapter implements PaymentStrategy {
 
     }
     public void pay() {
-        System.out.println(delegate.getClass().getSimpleName() +
-                " Customer paid " + total + " EUR");
+//        System.out.println(delegate.getClass().getSimpleName() +
+//                " Customer paid " + total + " EUR");
     }
 }

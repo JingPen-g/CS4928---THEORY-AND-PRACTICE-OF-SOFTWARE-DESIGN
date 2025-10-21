@@ -39,9 +39,6 @@ public class OrderManagerGod { // God Class
         Money discounted = Money.of(subtotal.asBigDecimal().subtract(discount.asBigDecimal())); // Duplicated Logic: Money and BigDecimal manipulations scattered inline.
         if (discounted.asBigDecimal().signum() < 0) discounted = Money.zero();
         Money tax = taxPolicy.taxOn(discounted);
-        Money total = discounted.add(tax);
-        Order order = new Order(1L);
-        order.pay(paymentStrategy);
         PricingService pricingService = new PricingService(discountPolicy, taxPolicy);
         PricingService.PricingResult pr = pricingService.price(subtotal);
         int taxPercent = (taxPolicy instanceof FixedRateTaxPolicy fixed) ? fixed.getPercent() : 0;
