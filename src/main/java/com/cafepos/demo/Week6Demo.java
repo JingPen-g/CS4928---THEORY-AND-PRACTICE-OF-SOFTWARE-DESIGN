@@ -11,15 +11,8 @@ import com.cafepos.smells.OrderManagerGod;
 
 public final class Week6Demo {
     public static void main(String[] args) {
-        var oldManager = new OrderManagerGod(
-                new ProductFactory(),
-                new LoyaltyPercentDiscount(5),
-                new FixedRateTaxPolicy(10),
-                new ReceiptPrinter(),
-                new CashPayment()
-        );
         // Old behavior
-        String oldReceipt = oldManager.process("LAT+L", 2, "CARD",
+        String oldReceipt = OrderManagerGod.process("LAT+L", 2, "CARD",
                 "LOYAL5", false);
         // New behavior with equivalent result
         var pricing = new PricingService(new LoyaltyPercentDiscount(5),
