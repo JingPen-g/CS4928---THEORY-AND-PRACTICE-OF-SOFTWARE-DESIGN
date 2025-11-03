@@ -1,3 +1,5 @@
+package com.cafepos;
+
 import com.cafepos.catalog.Product;
 import com.cafepos.catalog.SimpleProduct;
 import com.cafepos.common.Money;

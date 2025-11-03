@@ -1,3 +1,5 @@
+package com.cafepos;
+
 import com.cafepos.catalog.SimpleProduct;
 import com.cafepos.domain.LineItem;
 import com.cafepos.domain.Order;

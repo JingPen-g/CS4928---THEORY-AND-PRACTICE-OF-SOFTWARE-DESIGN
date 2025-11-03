@@ -1,3 +1,5 @@
+package com.cafepos;
+
 import com.cafepos.domain.Order;
 import com.cafepos.payment.PaymentStrategy;
 

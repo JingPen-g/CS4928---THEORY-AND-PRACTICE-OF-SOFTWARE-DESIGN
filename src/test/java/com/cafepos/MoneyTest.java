@@ -1,3 +1,5 @@
+package com.cafepos;
+
 import com.cafepos.common.Money;
 import org.junit.jupiter.api.Test;
 

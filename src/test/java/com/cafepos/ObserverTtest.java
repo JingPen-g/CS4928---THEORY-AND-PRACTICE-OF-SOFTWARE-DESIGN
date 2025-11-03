@@ -1,14 +1,11 @@
+package com.cafepos;
+
 import com.cafepos.catalog.SimpleProduct;
 import org.junit.jupiter.api.Test;
-
-import com.cafepos.catalog.Catalog;
-import com.cafepos.catalog.InMemoryCatalog;
-import com.cafepos.catalog.SimpleProduct;
 
 import com.cafepos.common.Money;
 import com.cafepos.domain.LineItem;
 import com.cafepos.domain.Order;
-import com.cafepos.payment.CardPayment;
 import com.cafepos.payment.CashPayment;
 import java.util.ArrayList;
 import java.util.List;
