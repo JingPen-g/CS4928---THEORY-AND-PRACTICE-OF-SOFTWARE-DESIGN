@@ -43,6 +43,7 @@ public final class Order {
         return items;
     }
 
+
 //    public void pay(PaymentStrategy strategy) {
 //        if (strategy == null) {
 //            throw new IllegalArgumentException("strategy required");
@@ -97,5 +98,10 @@ public final class Order {
     public void markReady() {
 // TODO: just publish notifyObservers("ready")
         notifyObservers("ready");
+    }
+
+    public void removeLastItem() {
+        if (!items.isEmpty())
+            items.remove(items.size()-1);
     }
 }

@@ -1,5 +1,9 @@
 // AddItemCommand
 package com.cafepos.command;
+
+import com.cafepos.command.Command;
+import com.cafepos.command.OrderService;
+
 public final class AddItemCommand implements Command {
     private final OrderService service;
     private final String recipe;

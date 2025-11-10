@@ -1,4 +1,5 @@
 package com.cafepos.command;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 public final class PosRemote {
